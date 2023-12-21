@@ -7,11 +7,16 @@ import {
   Param,
   Delete,
   Query,
+  HttpException,
+  HttpStatus,
+  Put,
+  UseFilters,
 } from '@nestjs/common';
 import { HomeService } from './home.service';
 import { CreateHomeDto } from './dto/create-home.dto';
 import { UpdateHomeDto } from './dto/update-home.dto';
 import { Request } from 'express';
+import { HttpExceptionFilter } from 'src/filter/http-exception.filter';
 
 @Controller('home')
 export class HomeController {
@@ -48,5 +53,12 @@ export class HomeController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.homeService.remove(+id);
+  }
+
+  // 测试异常
+  @Put('exception')
+  @UseFilters(new HttpExceptionFilter())
+  async findException() {
+    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 }
