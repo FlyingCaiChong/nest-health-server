@@ -12,14 +12,12 @@ import {
   Put,
   UseFilters,
   ParseIntPipe,
-  UsePipes,
 } from '@nestjs/common';
 import { HomeService } from './home.service';
-import { CreateHomeDto, createHomeSchema } from './dto/create-home.dto';
+import { CreateHomeDto } from './dto/create-home.dto';
 import { UpdateHomeDto } from './dto/update-home.dto';
 import { Request } from 'express';
 import { HttpExceptionFilter } from 'src/filter/http-exception.filter';
-// import { JoiValidationPipe } from 'src/pipe/joi-validation.pipe';
 import { ValidationPipe } from 'src/pipe/c-validation.pipe';
 
 @Controller('home')
@@ -27,7 +25,6 @@ export class HomeController {
   constructor(private readonly homeService: HomeService) {}
 
   @Post()
-  // @UsePipes(new JoiValidationPipe(createHomeSchema))
   create(@Body(new ValidationPipe()) createHomeDto: CreateHomeDto) {
     console.log(
       '🚀 ~ file: home.controller.ts:20 ~ HomeController ~ create ~ createHomeDto:',
