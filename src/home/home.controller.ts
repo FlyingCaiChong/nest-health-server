@@ -17,6 +17,10 @@ export class HomeController {
 
   @Post()
   create(@Body() createHomeDto: CreateHomeDto) {
+    console.log(
+      '🚀 ~ file: home.controller.ts:20 ~ HomeController ~ create ~ createHomeDto:',
+      createHomeDto,
+    );
     return this.homeService.create(createHomeDto);
   }
 

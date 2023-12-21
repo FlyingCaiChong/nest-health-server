@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 export class CreateHomeDto {
   @ApiProperty({
-    description: 'The name of the home',
+    description: 'The title of the home',
   })
-  name: string;
+  title: string;
 }
