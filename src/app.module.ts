@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Home } from './home/entities/home.entity';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -19,7 +22,7 @@ import { ConfigService } from '@nestjs/config';
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_DB'),
-        entities: [Home],
+        entities: [Home, User],
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -28,6 +31,8 @@ import { ConfigService } from '@nestjs/config';
       envFilePath: '.env.development',
       isGlobal: true,
     }),
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
