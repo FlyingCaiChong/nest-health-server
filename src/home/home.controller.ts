@@ -21,11 +21,15 @@ import { Request } from 'express';
 import { HttpExceptionFilter } from 'src/filter/http-exception.filter';
 import { ValidationPipe } from 'src/pipe/c-validation.pipe';
 import { LoggingInterceptor } from 'src/interceptor/logging.interceptor';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('home')
 @UseInterceptors(LoggingInterceptor)
 export class HomeController {
-  constructor(private readonly homeService: HomeService) {}
+  constructor(
+    private readonly homeService: HomeService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Post()
   create(@Body(new ValidationPipe()) createHomeDto: CreateHomeDto) {
@@ -41,6 +45,11 @@ export class HomeController {
     console.log(
       '🚀 ~ file: home.controller.ts:30 ~ HomeController ~ findAll ~ request:',
       query,
+    );
+    const dbUser = this.configService.get<string>('DATABASE_USER');
+    console.log(
+      '🚀 ~ file: home.controller.ts:50 ~ HomeController ~ findAll ~ dbUser:',
+      dbUser,
     );
     return this.homeService.findAll();
   }
