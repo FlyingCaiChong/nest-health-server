@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { HomeService } from './home.service';
 import { CreateHomeDto } from './dto/create-home.dto';
 import { UpdateHomeDto } from './dto/update-home.dto';
+import { Request } from 'express';
 
 @Controller('home')
 export class HomeController {
@@ -25,7 +27,11 @@ export class HomeController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query() query: Request) {
+    console.log(
+      '🚀 ~ file: home.controller.ts:30 ~ HomeController ~ findAll ~ request:',
+      query,
+    );
     return this.homeService.findAll();
   }
 
