@@ -11,18 +11,22 @@ import {
   HttpStatus,
   Put,
   UseFilters,
+  ParseIntPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { HomeService } from './home.service';
-import { CreateHomeDto } from './dto/create-home.dto';
+import { CreateHomeDto, createHomeSchema } from './dto/create-home.dto';
 import { UpdateHomeDto } from './dto/update-home.dto';
 import { Request } from 'express';
 import { HttpExceptionFilter } from 'src/filter/http-exception.filter';
+import { JoiValidationPipe } from 'src/pipe/joi-validation.pipe';
 
 @Controller('home')
 export class HomeController {
   constructor(private readonly homeService: HomeService) {}
 
   @Post()
+  @UsePipes(new JoiValidationPipe(createHomeSchema))
   create(@Body() createHomeDto: CreateHomeDto) {
     console.log(
       '🚀 ~ file: home.controller.ts:20 ~ HomeController ~ create ~ createHomeDto:',
@@ -41,8 +45,14 @@ export class HomeController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.homeService.findOne(+id);
+  findOne(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ) {
+    return this.homeService.findOne(id);
   }
 
   @Patch(':id')
