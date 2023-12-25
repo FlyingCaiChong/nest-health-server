@@ -22,6 +22,11 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Get('net')
+  findFromNetwork() {
+    return this.usersService.findFromNet();
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Get()
   findAll() {
