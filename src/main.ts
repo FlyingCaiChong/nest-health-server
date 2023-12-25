@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ResponseInterceptor } from './interceptor/response.interceptor';
 
 declare const module: any;
 
@@ -16,6 +17,9 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
+
+  // 添加全局拦截器
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   await app.listen(3000);
 
